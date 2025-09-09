@@ -2,7 +2,6 @@
 # the web application. HTTP Exception is also for sending errors back to the UI
 #Basemodel defines what our data should look like
 #random is for generating random numbers(for shuffling)
-import app
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -13,9 +12,9 @@ class Flashcard(BaseModel):
     question: str
     answer: str
 
-    app = FastAPI()
+  app = FastAPI()
 
-    flashcards = [
+flashcards = [
   {
     "id": 1,
     "question": "What is the AWS service that provides a scalable relational database service?",
@@ -353,191 +352,6 @@ class Flashcard(BaseModel):
   },
   {
     "id": 68,
-    "question": "Which AWS service allows you to launch and manage a private network in the cloud?",
-    "answer": "Amazon VPC"
-  },
-  {
-    "id": 69,
-    "question": "What is the purpose of an AWS Transit Gateway?",
-    "answer": "To connect thousands of VPCs and on-premises networks to a single gateway."
-  },
-  {
-    "id": 70,
-    "question": "Which service provides a hosted DNS web service?",
-    "answer": "Amazon Route 53"
-  },
-  {
-    "id": 71,
-    "question": "What is a fully managed service for building and deploying applications without managing the underlying infrastructure?",
-    "answer": "AWS Elastic Beanstalk"
-  },
-  {
-    "id": 72,
-    "question": "Which AWS service helps you understand and manage your AWS spending and usage?",
-    "answer": "AWS Cost Explorer"
-  },
-  {
-    "id": 73,
-    "question": "What is the AWS service for auditing and monitoring API calls in your account?",
-    "answer": "AWS CloudTrail"
-  },
-  {
-    "id": 74,
-    "question": "Which AWS support plan provides access to a Technical Account Manager (TAM)?",
-    "answer": "Enterprise Support"
-  },
-  {
-    "id": 75,
-    "question": "What is a service that helps protect against DDoS attacks?",
-    "answer": "AWS Shield"
-  },
-  {
-    "id": 76,
-    "question": "Which AWS service provides a web application firewall (WAF)?",
-    "answer": "AWS WAF"
-  },
-  {
-    "id": 77,
-    "question": "What is the service that provides recommendations for cost optimization and security?",
-    "answer": "AWS Trusted Advisor"
-  },
-  {
-    "id": 78,
-    "question": "What is the AWS service for managing and storing database credentials, API keys, and other secrets?",
-    "answer": "AWS Secrets Manager"
-  },
-  {
-    "id": 79,
-    "question": "Which service enables you to create and manage cryptographic keys?",
-    "answer": "AWS KMS"
-  },
-  {
-    "id": 80,
-    "question": "What is the primary purpose of an Amazon Machine Image (AMI)?",
-    "answer": "To provide the information required to launch an EC2 instance."
-  },
-  {
-    "id": 81,
-    "question": "Which EC2 pricing model is for temporary, flexible workloads at a significant discount?",
-    "answer": "Spot Instances"
-  },
-  {
-    "id": 82,
-    "question": "Which AWS service is used to send and receive messages between software components?",
-    "answer": "Amazon SQS"
-  },
-  {
-    "id": 83,
-    "question": "What is the AWS service that provides a serverless platform for data integration?",
-    "answer": "AWS Glue"
-  },
-  {
-    "id": 84,
-    "question": "What is the AWS service for delivering and managing SSL/TLS certificates?",
-    "answer": "AWS Certificate Manager (ACM)"
-  },
-  {
-    "id": 85,
-    "question": "Which service is a simple, scalable file storage for use with EC2 instances?",
-    "answer": "Amazon EFS"
-  },
-  {
-    "id": 86,
-    "question": "What is the purpose of a TCO calculator?",
-    "answer": "To compare the cost of running an on-premises infrastructure vs. AWS."
-  },
-  {
-    "id": 87,
-    "question": "Which service provides a dedicated network connection from your on-premises data center to AWS?",
-    "answer": "AWS Direct Connect"
-  },
-  {
-    "id": 88,
-    "question": "What is a service for migrating databases to AWS with minimal downtime?",
-    "answer": "AWS Database Migration Service (DMS)"
-  },
-  {
-    "id": 89,
-    "question": "Which AWS service provides governance, compliance, and auditing for your AWS resources?",
-    "answer": "AWS Config"
-  },
-  {
-    "id": 90,
-    "question": "What is the AWS service used for container orchestration?",
-    "answer": "Amazon ECS or Amazon EKS"
-  },
-  {
-    "id": 91,
-    "question": "Which AWS service provides a hybrid cloud storage service with local caching?",
-    "answer": "AWS Storage Gateway"
-  },
-  {
-    "id": 92,
-    "question": "What is the AWS service for publishing and subscribing to messages?",
-    "answer": "Amazon SNS"
-  },
-  {
-    "id": 93,
-    "question": "What is the benefit of using AWS Fargate?",
-    "answer": "It allows you to run containers without managing servers or clusters."
-  },
-  {
-    "id": 94,
-    "question": "Which service provides a simplified, scalable platform for deploying applications?",
-    "answer": "AWS Elastic Beanstalk"
-  },
-  {
-    "id": 95,
-    "question": "What is a virtual router that connects your VPC to the internet?",
-    "answer": "Internet Gateway"
-  },
-  {
-    "id": 96,
-    "question": "Which service is a managed file storage service for Windows and Linux instances?",
-    "answer": "Amazon FSx"
-  },
-  {
-    "id": 97,
-    "question": "Which tool provides a consolidated view of all your AWS accounts?",
-    "answer": "AWS Organizations"
-  },
-  {
-    "id": 98,
-    "question": "Which service is an object storage service with multiple storage classes?",
-    "answer": "Amazon S3"
-  },
-  {
-    "id": 99,
-    "question": "What is a private, scalable compute capacity in the cloud?",
-    "answer": "Amazon EC2"
-  },
-  {
-    "id": 100,
-    "question": "Which AWS service allows you to run code in a serverless environment?",
-    "answer": "AWS Lambda"
-  }
-]
-
-
-@app.get("/flashcards") ## Tells FastAPI to run a get request for code below 
-def get_all_flashcards():#returns all flashcards
-    return flashcards
-
-##A new endpoint for reshuffling cards
-@app.get("/flashcards/shuffle")
-def shuffle_flashcards():
-    random.shuffle(flashcards)
-    return{"Message":"Flashcards shuffled succesully!🎉🎉"}
-
-##This block of code allows us to access a specific get request which is the id. 
-##So you are able to chose a specific ID from the list
-
-@app.get("/flashcards/{flashcard_id}")
-def get_flashcard(flashcard_id:int):
-    for card in flashcards:
-        if card["id"] == flashcard_id:
-            return card
-        raise HTTPException(status_code=404, detail="Flashcard not found😬") #The if code indicates that
-    #if the flashcard is not found, indicate that there is a 404 error
+    "question": "Which AWS service allows you to launch and manage a
 
 
