@@ -3,11 +3,7 @@
 import tkinter as tk
 import requests
 import json
-
-##This creates a main window for your application
-root=tk.Tk()
-root.title("Deckly")
-root.geometry("400x300") ##This sets the size of the window
+import threading
 
 ##These variables will show which cards are being shown   and also store the flashcards
 current_index=0
@@ -18,7 +14,7 @@ flashcards=[]
 def fetch_flashcards():
     global flashcards  ##This tells python to use the global variable flashcards
     try:
-        response=requests.get("http://localhost:8000/flashcards") ##
+        response=requests.get("http://localhost:8000/flashcards", timeout=5) ##
         response.raise_for_status() ##This checks if the request was successful
         flashcards=response.json() ##This converts the response to a json object
         if flashcards:
@@ -28,9 +24,7 @@ def fetch_flashcards():
        error_label=tk.Label(root, text="Error loading flashcards", font=("Helvetica", 12), bg="beige", fg="pink")
        error_label.pack(pady=50)
 
-    ##This functions updates the texts on the screen.
-    # It gets the current flashcard and updates our list and sets the texts of our labels to the question.
-    def show_flashcards(index):
+def show_flashcards(index):
        global current_index
        current_index = index
        card = flashcards[current_index]
@@ -52,6 +46,12 @@ def next_card():
         current_index = (current_index + 1) % len(flashcards)
         show_flashcards(current_index)
 
+##This creates a main window for your application
+root=tk.Tk()
+root.title("Deckly")
+root.geometry("400x300") ##This sets the size of the window
+
+
  ##Next step is to create the UI widgets
  #Pack automatically places the widgets inside the window
 card_frame=tk.Frame(root, bg="beige",width=300, height=150, bd=2, relief="groove")    
@@ -69,5 +69,10 @@ flip_button.pack(pady=10)##This adds some space around the button
 next_button=tk.Button(root, text="Next card", command=next_card)
 next_button.pack(pady=10)##This adds some space around the button
 
-fetch_flashcards() ##This fetches the data from our backend
+def run_fetch():
+    thread = threading.Thread(target=fetch_flashcards)
+    thread.daemon = True
+    thread.start()
+
+run_fetch() ##This fetches the data from our backend
 root.mainloop() ##This starts the tkinter event loop
