@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+pydantic
+requests
+# Note: tkinter and json are part of the Python standard library — do not include them here.

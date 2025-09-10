@@ -12,19 +12,19 @@ class Flashcard(BaseModel):
     question: str
     answer: str
 
-  app = FastAPI()
+app = FastAPI()
 
 flashcards = [
-  {
-    "id": 1,
-    "question": "What is the AWS service that provides a scalable relational database service?",
-    "answer": "Amazon RDS"
-  },
-  {
-    "id": 2,
-    "question": "What is the primary benefit of the AWS Cloud?",
-    "answer": "Trading capital expense for variable expense"
-  },
+    {
+      "id": 1,
+      "question": "What is the AWS service that provides a scalable relational database service?",
+      "answer": "Amazon RDS"
+    },
+    {
+      "id": 2,
+      "question": "What is the primary benefit of the AWS Cloud?",
+      "answer": "Trading capital expense for variable expense"
+    },
   {
     "id": 3,
     "question": "Which AWS service is used to launch virtual servers in the cloud?",
@@ -352,6 +352,17 @@ flashcards = [
   },
   {
     "id": 68,
-    "question": "Which AWS service allows you to launch and manage a
+    "question": "Which AWS service allows you to launch and manage a virtual server in the cloud?",
+    "answer": "Amazon EC2"
+  }
+]
 
+# Add endpoint to serve flashcards
+@app.get("/flashcards")
+def get_flashcards():
+    return flashcards
 
+# Add code to run the FastAPI server if executed directly
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
