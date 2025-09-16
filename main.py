@@ -1,18 +1,17 @@
-## This set of lines allows you to generate FastAPI which helps in creating 
-# the web application. HTTP Exception is also for sending errors back to the UI
-#Basemodel defines what our data should look like
-#random is for generating random numbers(for shuffling)
+## These lines allow you to use FastAPI, which helps in creating 
+# web applications. HTTPException is for sending errors back to the UI.
+# BaseModel defines what our data should look like.
+# random is for generating random numbers (for shuffling).
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 import random 
+#class Flashcard(BaseModel):
+    #id: int
+    #question: str
+    #answer: str
 
-class Flashcard(BaseModel):
-    id: int
-    question: str
-    answer: str
-
-  app = FastAPI()
+app = FastAPI()
 
 flashcards = [
   {
@@ -352,6 +351,25 @@ flashcards = [
   },
   {
     "id": 68,
-    "question": "Which AWS service allows you to launch and manage a
+    "question": "Which AWS service allows you to launch and manage a private network in the cloud?"
+  }
+]
 
+@app.get("/flashcards")  # Tells FastAPI to run a GET request for the code below
+def get_all_flashcards():  # Returns all flashcards
+    return flashcards
 
+# A new endpoint for reshuffling cards
+@app.get("/flashcards/shuffle")
+def shuffle_flashcards():
+    random.shuffle(flashcards)
+    return {"Message": "Flashcards shuffled successfully! 🎉🎉"}
+
+# This block of code allows us to access a specific GET request by ID.
+# You are able to choose a specific ID from the list.
+@app.get("/flashcards/{flashcard_id}")
+def get_flashcard(flashcard_id: int):
+    for card in flashcards:
+        if card["id"] == flashcard_id:
+            return card
+    raise HTTPException(status_code=404, detail="Flashcard not found 😬")
