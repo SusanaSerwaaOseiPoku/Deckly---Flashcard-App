@@ -7,9 +7,9 @@ from pydantic import BaseModel
 
 import random 
 #class Flashcard(BaseModel):
-    #id: int
-    #question: str
-    #answer: str
+   # id: int
+   # question: str
+   # answer: str
 
 app = FastAPI()
 
@@ -131,7 +131,7 @@ flashcards = [
   },
   {
     "id": 24,
-    "question": "Which AWS service provides a web application firewall (WAF)?",
+    "question": "Which AWS service provides a web application firewall?",
     "answer": "AWS WAF"
   },
   {
@@ -351,7 +351,8 @@ flashcards = [
   },
   {
     "id": 68,
-    "question": "Which AWS service allows you to launch and manage a private network in the cloud?"
+    "question": "Which AWS service allows you to launch and manage a private network in the cloud?",
+    "answer": "Amazon VPC"
   }
 ]
 

@@ -4,6 +4,8 @@ import tkinter as tk
 import requests
 import json
 
+
+
 # This creates the main window for your application
 root = tk.Tk()
 root.title("Deckly")
@@ -31,19 +33,30 @@ def fetch_flashcards():
 # It gets the current flashcard, updates our index, and sets the label text to the question.
 def show_flashcards(index):
     global current_index
+    if not flashcards:
+        card_label.config(text="No flashcards available.")
+        flip_button.config(state=tk.DISABLED)
+        next_button.config(state=tk.DISABLED)
+        reshuffle_button.config(state=tk.DISABLED)
+        return
     current_index = index
     card = flashcards[current_index]
-    card_label.config(text=card["question"])
+    question = card.get("question", "No question found.")
+    card_label.config(text=question)
     flip_button.config(state=tk.NORMAL)
+    next_button.config(state=tk.NORMAL)
+    reshuffle_button.config(state=tk.NORMAL)
 
 def flip_card():
     if not flashcards or current_index >= len(flashcards):
         return
-    card = flashcards[current_index]  # This points to the exact card you need
-    if card_label.cget("text") == card["question"]:
-        card_label.config(text=card["answer"])
+    card = flashcards[current_index]
+    question = card.get("question", "")
+    answer = card.get("answer", "")
+    if card_label.cget("text") == question:
+        card_label.config(text=answer if answer else "No answer found.")
     else:
-        card_label.config(text=card["question"])
+        card_label.config(text=question if question else "No question found.")
 
 def next_card():
     global current_index
@@ -51,11 +64,20 @@ def next_card():
         current_index = (current_index + 1) % len(flashcards)
         show_flashcards(current_index)
 
+def reshuffle_cards():
+    global flashcards, current_index
+    import random
+    if flashcards:
+        random.shuffle(flashcards)
+        current_index = 0
+        show_flashcards(current_index)
+
 # Next, create the UI widgets
 # pack() automatically places the widgets inside the window
-card_frame = tk.Frame(root, bg="beige", width=300, height=150, bd=2, relief="groove")
-card_frame.pack(pady=20)  # This adds some space around the frame
-card_frame.pack_propagate(False)  # This prevents the frame from resizing to fit its contents
+card_frame = tk.Frame(root, bg="white", width=300, height=150, bd=2, relief="sunken")
+card_frame.pack(pady=10)  # This adds some space around the frame
+card_frame.pack(expand=True)
+card_frame.pack_propagate(True) # This allows the frame to resize based on its content
 
 # Create a label that can hold text and put it inside the card_frame.
 # The label's text will be empty at first. If the text is longer than a specific width,
@@ -67,6 +89,8 @@ flip_button = tk.Button(root, text="Flip card", command=flip_card)
 flip_button.pack(pady=10)  # This adds some space around the button
 next_button = tk.Button(root, text="Next card", command=next_card)
 next_button.pack(pady=10)  # This adds some space around the button
+reshuffle_button = tk.Button(root, text="Reshuffle card", command=reshuffle_cards)
+reshuffle_button.pack(pady=10)
 
 fetch_flashcards()  # This fetches the data from our backend
 root.mainloop()  # This starts the tkinter event loop
